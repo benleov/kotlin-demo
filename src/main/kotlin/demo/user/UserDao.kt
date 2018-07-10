@@ -1,4 +1,4 @@
-package demo.userdao
+package demo.user
 
 import java.util.concurrent.atomic.AtomicInteger
 

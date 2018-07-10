@@ -1,11 +1,12 @@
 package demo.test
 
-import kotlin.test.assertEquals
 import org.junit.Test
+import kotlin.test.assertEquals
 
 class DemoTest {
 
-    @Test fun testFail() : Unit {
+    @Test
+    fun testFail() : Unit {
         assertEquals("that", "this")
     }
 
