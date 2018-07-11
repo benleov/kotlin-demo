@@ -1,18 +1,17 @@
-FROM maven:3-jdk-8 as build
+FROM gradle:jdk8-alpine as build
 
-COPY pom.xml /src/pom.xml
+COPY build.gradle /src/build.gradle
 
 WORKDIR /src
 
-RUN mvn verify --fail-never
-
 COPY src/ /src/src
 
-RUN mvn package
+USER root
+RUN gradle shadowJar
 
 FROM openjdk:8-jre
 
-COPY --from=build /src/target/demo-1.0-SNAPSHOT-shaded.jar /opt/demo.jar
+COPY --from=build /src/build/libs/src-1.0-SNAPSHOT-all.jar /opt/demo.jar
 
 EXPOSE 7000
 
