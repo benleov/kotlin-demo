@@ -11,6 +11,7 @@
     <properties>
         <kotlin.version>1.2.41</kotlin.version>
         <main.class>demo.MainKt</main.class>
+        <aws.version>1.11.323</aws.version>
     </properties>
 
     <dependencies>
@@ -33,6 +34,16 @@
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-stdlib-jdk8</artifactId>
             <version>${kotlin.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-sqs</artifactId>
+            <version>${aws.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-ssm</artifactId>
+            <version>${aws.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>

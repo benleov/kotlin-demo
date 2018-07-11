@@ -1,5 +1,6 @@
 package demo
 
+import demo.user.Message
 import demo.user.User
 import demo.user.UserDao
 import io.javalin.ApiBuilder.*
@@ -42,6 +43,12 @@ fun main(args: Array<String>) {
                     user = user
             )
             ctx.status(204)
+        }
+
+        post("/sqs/publish") { ctx ->
+            val message = ctx.bodyAsClass(Message::class.java)
+            userDao.publishToSqs(message)
+            ctx.status(200)
         }
 
         delete("/users/delete/:id") { ctx ->

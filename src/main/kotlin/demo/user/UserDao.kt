@@ -1,6 +1,12 @@
 package demo.user
 
+import com.amazonaws.metrics.AwsSdkMetrics
 import java.util.concurrent.atomic.AtomicInteger
+import com.amazonaws.services.simplesystemsmanagement.AWSSimpleSystemsManagementClientBuilder
+import com.amazonaws.services.sqs.AmazonSQSClientBuilder
+import demo.user.ssm.AwsSsm
+import demo.user.ssm.LocalSsm
+import demo.user.ssm.SsmParameters
 
 class UserDao {
 
@@ -31,6 +37,28 @@ class UserDao {
     fun update(id: Int, user: User) {
         users.put(id, User(name = user.name, email = user.email, id = id))
     }
+
+    fun publishToSqs(message : Message) {
+
+        val environment = System.getenv("Environment")
+        val region = System.getenv("Region") ?: "local"
+
+        val ssmProvider = if(environment.isNullOrEmpty()) LocalSsm() else AwsSsm(environment, region)
+        val queueName = ssmProvider.getProperty(SsmParameters.SQS_QUEUE_NAME)
+
+        val sqsClient = AmazonSQSClientBuilder
+                .standard()
+                .withRegion(region)
+                .build()
+
+        val request = sqsClient.listQueues(queueName)
+
+        request.queueUrls.forEach {
+            sqsClient.sendMessage(it, message.message)
+        }
+
+    }
+
 
     fun delete(id: Int) {
         users.remove(id)
