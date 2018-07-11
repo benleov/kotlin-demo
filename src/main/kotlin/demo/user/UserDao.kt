@@ -43,7 +43,7 @@ class UserDao {
         val environment = System.getenv("Environment")
         val region = System.getenv("Region") ?: "local"
 
-        val ssmProvider = if(environment.isNullOrEmpty()) LocalSsm() else AwsSsm(environment, region)
+        val ssmProvider = if(environment.isNullOrEmpty() || environment == "local") LocalSsm() else AwsSsm(environment, region)
         val queueName = ssmProvider.getProperty(SsmParameters.SQS_QUEUE_NAME)
 
         val sqsClient = AmazonSQSClientBuilder
