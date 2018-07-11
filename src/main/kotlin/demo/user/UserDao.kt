@@ -40,8 +40,8 @@ class UserDao {
 
     fun publishToSqs(message : Message) {
 
-        val environment = System.getenv("Environment")
-        val region = System.getenv("Region") ?: "local"
+        val environment = System.getenv("Environment")  ?: "local"
+        val region = System.getenv("Region")
 
         val ssmProvider = if(environment.isNullOrEmpty() || environment == "local") LocalSsm() else AwsSsm(environment, region)
         val queueName = ssmProvider.getProperty(SsmParameters.SQS_QUEUE_NAME)

@@ -5,7 +5,7 @@ import com.amazonaws.services.simplesystemsmanagement.model.GetParameterRequest
 
 class AwsSsm(private val environment : String, region: String) : SsmProvider {
 
-    val client = AWSSimpleSystemsManagementClientBuilder
+    private val client = AWSSimpleSystemsManagementClientBuilder
             .standard()
             .withRegion(region)
             .build();
