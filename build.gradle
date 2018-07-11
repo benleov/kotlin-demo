@@ -1,9 +1,10 @@
 group = "io.javalin"
 version = "1.0-SNAPSHOT"
 
+
 buildscript {
 
-    ext.kotlin_version = '1.2.41'
+    ext.kotlin_version = '1.2.50'
     ext.aws_version = '1.11.323'
 
     repositories {
@@ -20,6 +21,10 @@ buildscript {
 }
 
 apply plugin: 'kotlin'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
 apply plugin: 'application'
 apply plugin: 'com.github.johnrengelman.shadow'
 
