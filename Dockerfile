@@ -6,13 +6,13 @@ WORKDIR /src
 
 RUN mvn verify --fail-never
 
-COPY src/ /src
+COPY src/ /src/src
 
 RUN mvn package
 
 FROM openjdk:8-jre
 
-COPY --from=build /src/target/demo-1.0-SNAPSHOT.jar /opt/demo.jar
+COPY --from=build /src/target/demo-1.0-SNAPSHOT-shaded.jar /opt/demo.jar
 
 EXPOSE 7000
 
