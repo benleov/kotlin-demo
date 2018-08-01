@@ -6,7 +6,7 @@ import demo.ssm.PropertyProvider
 import demo.ssm.SsmParameters
 import java.util.*
 
-class SQSDao(private val environment: String, private val region: String, private val propertyProvider: PropertyProvider) {
+class SQSDao(private val region: String, private val propertyProvider: PropertyProvider) {
 
     fun publishToSqs(message: SQSMessage) : Boolean {
 
@@ -40,9 +40,6 @@ class SQSDao(private val environment: String, private val region: String, privat
 
         request.queueUrls.forEach {
             val result = sqsClient.getQueueAttributes(GetQueueAttributesRequest(it).withAttributeNames("All"))
-
-
-            println(it)
             return result.attributes
         }
 

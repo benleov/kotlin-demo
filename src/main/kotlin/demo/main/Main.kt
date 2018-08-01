@@ -16,7 +16,7 @@ fun main(args: Array<String>) {
 
     var propertyProvider = if (environment == "local") LocalPropertyProvider() else SSMPropertyProvider(environment, System.getenv("Region"))
 
-    val sqsDao = SQSDao(environment, region, propertyProvider)
+    val sqsDao = SQSDao(region, propertyProvider)
 
     val app = Javalin.create().apply {
         port(7000)
