@@ -1,4 +1,4 @@
 package demo.dynamo
 
-class DynamoRow(val tableName: String, val values:  Map<String, String>) {
+class DynamoRow(val values:  Map<String, String>) {
 }

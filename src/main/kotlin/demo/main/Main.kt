@@ -52,7 +52,7 @@ fun main(args: Array<String>) {
         post("/dynamodb/:tableName") { ctx ->
 
             val row = ctx.bodyAsClass(DynamoRow::class.java)
-            val inserted = dynamoDao.insert(row)
+            val inserted = dynamoDao.insert(ctx.param("queueName").toString(), row)
             ctx.status(if (inserted) 200 else 400)
         }
 

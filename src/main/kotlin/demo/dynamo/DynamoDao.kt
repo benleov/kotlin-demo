@@ -6,7 +6,7 @@ import com.amazonaws.services.dynamodbv2.model.AttributeValue
 class DynamoDao(private val region: String) {
 
 
-    fun insert(row: DynamoRow) : Boolean {
+    fun insert(tableName: String, row: DynamoRow) : Boolean {
 
         val dynamoClient = AmazonDynamoDBAsyncClientBuilder
                 .standard()
@@ -15,7 +15,7 @@ class DynamoDao(private val region: String) {
 
         val values = row.values.mapValues { AttributeValue(it.value) }
 
-        val result = dynamoClient.putItem(row.tableName, values);
+        val result = dynamoClient.putItem(tableName, values);
 
         return true
     }
