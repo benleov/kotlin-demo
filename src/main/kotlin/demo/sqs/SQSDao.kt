@@ -1,8 +1,10 @@
 package demo.sqs
 
 import com.amazonaws.services.sqs.AmazonSQSClientBuilder
+import com.amazonaws.services.sqs.model.GetQueueAttributesRequest
 import demo.ssm.PropertyProvider
 import demo.ssm.SsmParameters
+import java.util.*
 
 class SQSDao(private val environment: String, private val region: String, private val propertyProvider: PropertyProvider) {
 
@@ -25,6 +27,26 @@ class SQSDao(private val environment: String, private val region: String, privat
         }
 
         return sent
+    }
+
+    fun getQueueAttributes(queueName: String) : Map<String, String> {
+
+        val sqsClient = AmazonSQSClientBuilder
+                .standard()
+                .withRegion(region)
+                .build()
+
+        val request = sqsClient.listQueues(queueName)
+
+        request.queueUrls.forEach {
+            val result = sqsClient.getQueueAttributes(GetQueueAttributesRequest(it).withAttributeNames("All"))
+
+
+            println(it)
+            return result.attributes
+        }
+
+        return Collections.emptyMap()
     }
 
 

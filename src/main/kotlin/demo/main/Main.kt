@@ -4,6 +4,7 @@ import demo.sqs.SQSDao
 import demo.sqs.SQSMessage
 import demo.ssm.impl.LocalPropertyProvider
 import demo.ssm.impl.SSMPropertyProvider
+import io.javalin.ApiBuilder.get
 import io.javalin.ApiBuilder.post
 import io.javalin.Javalin
 
@@ -59,6 +60,14 @@ fun main(args: Array<String>) {
             ctx.status(if (sent) 200 else 400)
         }
 
+        get("/sqs/attributes/:queueName") { ctx ->
+
+            val attributes = sqsDao
+                    .getQueueAttributes(ctx.param("queueName").toString())
+
+            ctx.json(attributes)
+            ctx.status(200)
+        }
 //        delete("/users/delete/:id") { ctx ->
 //            sqsDao.delete(ctx.param("id")!!.toInt())
 //            ctx.status(204)
