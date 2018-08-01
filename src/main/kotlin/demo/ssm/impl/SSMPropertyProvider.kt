@@ -1,9 +1,10 @@
-package demo.user.ssm
+package demo.ssm.impl
 
 import com.amazonaws.services.simplesystemsmanagement.AWSSimpleSystemsManagementClientBuilder
 import com.amazonaws.services.simplesystemsmanagement.model.GetParameterRequest
+import demo.ssm.PropertyProvider
 
-class AwsSsm(private val environment : String, region: String) : SsmProvider {
+class SSMPropertyProvider(private val environment : String, region: String) : PropertyProvider {
 
     private val client = AWSSimpleSystemsManagementClientBuilder
             .standard()

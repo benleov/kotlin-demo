@@ -1,4 +1,4 @@
-package demo.user.ssm
+package demo.ssm
 
 object SsmParameters {
 

@@ -1,6 +1,6 @@
-package demo.user.ssm
+package demo.ssm
 
-interface SsmProvider {
+interface PropertyProvider {
 
     fun getProperty(name : String) : String
 
