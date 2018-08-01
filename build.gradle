@@ -42,6 +42,7 @@ dependencies {
 
     compile "com.amazonaws:aws-java-sdk-sqs:$aws_version"
     compile "com.amazonaws:aws-java-sdk-ssm:$aws_version"
+    compile "com.amazonaws:aws-java-sdk-dynamodb:$aws_version"
 
     testCompile "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
     testCompile "junit:junit:4.12"

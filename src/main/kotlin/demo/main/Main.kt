@@ -1,5 +1,7 @@
 package demo.main
 
+import demo.dynamo.DynamoDao
+import demo.dynamo.DynamoRow
 import demo.sqs.SQSDao
 import demo.sqs.SQSMessage
 import demo.ssm.impl.LocalPropertyProvider
@@ -17,6 +19,7 @@ fun main(args: Array<String>) {
     var propertyProvider = if (environment == "local") LocalPropertyProvider() else SSMPropertyProvider(environment, System.getenv("Region"))
 
     val sqsDao = SQSDao(region, propertyProvider)
+    val dynamoDao = DynamoDao(region)
 
     val app = Javalin.create().apply {
         port(7000)
@@ -26,33 +29,8 @@ fun main(args: Array<String>) {
 
     app.routes {
 
-//        get("/users") { ctx ->
-//            ctx.json(sqsDao.users)
-//        }
-//
-//        get("/users/:id") { ctx ->
-//            ctx.json(sqsDao.findById(ctx.param("id")!!.toInt())!!)
-//        }
-//
-//        get("/users/email/:email") { ctx ->
-//            ctx.json(sqsDao.findByEmail(ctx.param("email")!!)!!)
-//        }
-//
-//        post("/users/create") { ctx ->
-//            val user = ctx.bodyAsClass(User::class.java)
-//            sqsDao.save(name = user.name, email = user.email)
-//            ctx.status(201)
-//        }
-//
-//        patch("/users/update/:id") { ctx ->
-//            val user = ctx.bodyAsClass(User::class.java)
-//            sqsDao.update(
-//                    id = ctx.param("id")!!.toInt(),
-//                    user = user
-//            )
-//            ctx.status(204)
-//        }
 
+        // publishes a message to sqs
         post("/sqs/publish") { ctx ->
 
             val message = ctx.bodyAsClass(SQSMessage::class.java)
@@ -60,6 +38,7 @@ fun main(args: Array<String>) {
             ctx.status(if (sent) 200 else 400)
         }
 
+        // returns the attributes of the specified queue
         get("/sqs/attributes/:queueName") { ctx ->
 
             val attributes = sqsDao
@@ -68,10 +47,14 @@ fun main(args: Array<String>) {
             ctx.json(attributes)
             ctx.status(200)
         }
-//        delete("/users/delete/:id") { ctx ->
-//            sqsDao.delete(ctx.param("id")!!.toInt())
-//            ctx.status(204)
-//        }
+
+        // creates a row in dynamo db
+        post("/dynamodb/:tableName") { ctx ->
+
+            val row = ctx.bodyAsClass(DynamoRow::class.java)
+            val inserted = dynamoDao.insert(row)
+            ctx.status(if (inserted) 200 else 400)
+        }
 
     }
 
